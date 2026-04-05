@@ -6,6 +6,7 @@ from keras.utils import np_utils
 from tensorflow.keras.models import Sequential
 from tensorflow.keras import regularizers
 from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+from model_structure import create_model
 
 def traindata(size,RGB):        #(圖片尺寸與RGB通道);(120,3)
     
@@ -56,26 +57,7 @@ def replacelabel(label):
     
 def makemodel(X_Train40_norm,y_TrainOneHot,size,RGB):
     
-    model = Sequential()
-    
-    model.add(Conv2D(filters=8,kernel_size=(3, 3),padding='same',input_shape=(size, size, RGB),activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Conv2D(filters=16,kernel_size=(3, 3),padding='same',activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Conv2D(filters=32,kernel_size=(3, 3),padding='same',activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Conv2D(filters=64,kernel_size=(3, 3),padding='same',activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Conv2D(filters=128,kernel_size=(3, 3),padding='same',activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Conv2D(filters=128,kernel_size=(3, 3),padding='same',activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    
-    
-    model.add(Flatten())
-    
-    # Fully connected
-    model.add(Dense(5, activation='softmax'))
+    model = create_model(size, RGB)
     model.summary()
     print("")
     
