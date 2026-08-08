@@ -2,9 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import cv2
 import os    
-from model_structure import create_model
+from src.model.cnn import CNNModel
 from keras.utils import to_categorical
 from keras.callbacks import History
+from keras import Sequential
 
 def traindata(size,RGB):        #(圖片尺寸與RGB通道);(120,3)
     
@@ -55,7 +56,7 @@ def replacelabel(label):
     
 def makemodel(X_Train40_norm,y_TrainOneHot,size,RGB):
     
-    model = create_model(size, RGB)
+    model: Sequential = CNNModel(size, RGB).model
     model.summary()
     print("")
     
