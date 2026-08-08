@@ -1,0 +1,4 @@
+KERNAL_SIZE = (3, 3)
+POOL_SIZE = (2, 2)
+PADDING = 'same'
+ACTIVATION = 'relu'

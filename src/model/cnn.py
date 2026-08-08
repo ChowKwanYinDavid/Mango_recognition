@@ -1,10 +1,6 @@
 import keras
 
-# TODO: set it at main.py / constants.py
-KERNAL_SIZE = (3, 3)
-POOL_SIZE = (2, 2)
-PADDING = 'same'
-ACTIVATION = 'relu'
+from constants import ACTIVATION, KERNAL_SIZE, PADDING, POOL_SIZE
 
 class CNNModel:
     def __init__(self, size, RGB):
