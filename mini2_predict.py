@@ -1,11 +1,12 @@
-from tensorflow.keras.preprocessing import image
+# from tensorflow.keras.preprocessing import image
+from keras.preprocessing import image
+from keras.models import load_model
+from keras.models import Model
 import glob
-import tensorflow
 import os
 import numpy as np
 import pandas as pd
-import csv
-from sklearn.metrics import precision_score, recall_score,f1_score
+from sklearn.metrics import precision_score, recall_score, f1_score
 import time
 import cv2
 
@@ -62,11 +63,11 @@ def predict(newimg,file_name,file_path):
         #trainlabel = np.array([image_id for label,image_id in train]).astype(np.str)
     pre=[]
     #print("check2")
-    model = tensorflow.keras.models.load_model('D:\\NTNU\\Pattern recognition\\final project\\Second\\sigmoid mango120_model.h5')
+    model: Model = load_model('D:\\NTNU\\Pattern recognition\\final project\\Second\\sigmoid mango120_model.h5')
     #print("check3")
     
     #for i in range(len(f_names)):
-    images = image.load_img((file_path+file_name), target_size=(120,120,3))
+    images = image.load_img((file_path+file_name), target_size=(120,120))
     x = image.img_to_array(images)
     #print("check4")
     # Standardize feature data
@@ -74,16 +75,16 @@ def predict(newimg,file_name,file_path):
     x = np.expand_dims(x, 0)
     #print('loading no.%s image' % i)
     #print("check5")
-    #進行模型預測
-    y = model(x)
+    # 進行模型預測
+    y = model.predict(x)
     print(y)
     index=np.argsort(y[0,:])     #排序
     print(labeltype[index[4]],y[0,index[4]])
     pre.append(labeltype[index[4]])      #選最後的值(最大值)
     for i in range(0,5):
-        if(labeltype[index[i]]>0.4 and i!=5):
-            label1=labeltype[index[i]]
-            label2=labeltype[index[i+1]]
+        if (y[0, index[i]] > 0.4 and i != 4):
+            label1 = labeltype[index[i]]
+            label2 = labeltype[index[i+1]]
             
     
     print("labeltype[index[4]]",labeltype[index[4]])        #預測的label,type=str
@@ -169,11 +170,11 @@ def excelandpredict():
                 #trainlabel = np.array([image_id for label,image_id in train]).astype(np.str)
             pre=[]
             #print("check2")
-            model = tensorflow.keras.models.load_model('D:\\NTNU\\Pattern recognition\\final project\\Second\\sigmoid mango120_model.h5')
+            model: Model = load_model('D:\\NTNU\\Pattern recognition\\final project\\Second\\sigmoid mango120_model.h5')
             #print("check3")
     
             #for i in range(len(f_names)):
-            images = image.load_img((file_path+file_name), target_size=(120,120,3))
+            images = image.load_img((file_path+file_name), target_size=(120,120))
             x = image.img_to_array(images)
             #print("check4")
             # Standardize feature data
@@ -181,8 +182,8 @@ def excelandpredict():
             x = np.expand_dims(x, 0)
             #print('loading no.%s image' % i)
             #print("check5")
-            #進行模型預測
-            y = model(x)
+            # 進行模型預測
+            y = model.predict(x)
             print(y)
             index=np.argsort(y[0,:])     #排序
             print(labeltype[index[4]],y[0,index[4]])
@@ -237,10 +238,10 @@ def ccPredict():
     pre=[]
 
     #讀取訓練完的model
-    model = tensorflow.keras.models.load_model('D:\\NTNU\\Pattern recognition\\final project\\second\\mango90_model.h5')
+    model: Model = load_model('D:\\NTNU\\Pattern recognition\\final project\\second\\mango90_model.h5')
     #j=0
     for i in range(len(f_names)):
-        images = image.load_img(f_names[i], target_size=(90,90,3))
+        images = image.load_img(f_names[i], target_size=(90,90))
         x = image.img_to_array(images)
         
         # Standardize feature data

@@ -2,10 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import cv2
 import os    
-from keras.utils import np_utils
-from tensorflow.keras.models import Sequential
-from tensorflow.keras import regularizers
-from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
 from model_structure import create_model
 
 def traindata(size,RGB):        #(圖片尺寸與RGB通道);(120,3)
@@ -14,9 +10,9 @@ def traindata(size,RGB):        #(圖片尺寸與RGB通道);(120,3)
     TrainPath = './Second/test_train/'
     TrainallFileList = os.listdir(TrainPath)
     #讀取csv資料
-    train = np.genfromtxt('./Second/train_div.csv', delimiter=',', dtype=None)[1:]
-    trainid = np.array([label for label,image_id in train]).astype(np.str)
-    trainlabel = np.array([image_id for label,image_id in train]).astype(np.str)
+    train = np.genfromtxt('./Second/train_div.csv', delimiter=',', dtype=str)[1:]
+    trainid = np.array([label for label,image_id in train]).astype(str)
+    trainlabel = np.array([image_id for label,image_id in train]).astype(str)
     
     trainX=[]
     trainY=[]
@@ -31,8 +27,8 @@ def traindata(size,RGB):        #(圖片尺寸與RGB通道);(120,3)
     #標準化特徵
     X_Train40_norm = X_Train40 / 255
         
-    #Onehot-encoding
-    y_TrainOneHot = np_utils.to_categorical(y_Train)
+    # One-hot encoding
+    y_TrainOneHot = to_categorical(y_Train)
     return X_Train40_norm,y_TrainOneHot
 
 def Pretreatment(path,size) :    
@@ -104,9 +100,9 @@ def show_train_history(train_history, train, validation):
 TrainPath = './Second/test_train/'
 TrainallFileList = os.listdir(TrainPath)
 
-train = np.genfromtxt('D:/NTNU/Pattern recognition/final project/Second/train_div.csv', delimiter=',', dtype=None)[1:]
-trainid = np.array([label for label,image_id in train]).astype(np.str)
-trainlabel = np.array([image_id for label,image_id in train]).astype(np.str)
+train = np.genfromtxt('D:/NTNU/Pattern recognition/final project/Second/train_div.csv', delimiter=',', dtype=str)[1:]
+trainid = np.array([label for label,image_id in train]).astype(str)
+trainlabel = np.array([image_id for label,image_id in train]).astype(str)
 
 #設定圖片尺寸與RGB通道
 size=120
