@@ -3,13 +3,15 @@ import matplotlib.pyplot as plt
 import cv2
 import os    
 from model_structure import create_model
+from keras.utils import to_categorical
+from keras.callbacks import History
 
 def traindata(size,RGB):        #(圖片尺寸與RGB通道);(120,3)
     
-    #讀取圖片
+    # 讀取圖片
     TrainPath = './Second/test_train/'
     TrainallFileList = os.listdir(TrainPath)
-    #讀取csv資料
+    # 讀取csv資料
     train = np.genfromtxt('./Second/train_div.csv', delimiter=',', dtype=str)[1:]
     trainid = np.array([label for label,image_id in train]).astype(str)
     trainlabel = np.array([image_id for label,image_id in train]).astype(str)
@@ -24,7 +26,7 @@ def traindata(size,RGB):        #(圖片尺寸與RGB通道);(120,3)
     X_Train40 = X_Train.reshape(X_Train.shape[0], size,size,RGB).astype('float32')
     
     
-    #標準化特徵
+    # 標準化特徵
     X_Train40_norm = X_Train40 / 255
         
     # One-hot encoding
@@ -63,14 +65,21 @@ def makemodel(X_Train40_norm,y_TrainOneHot,size,RGB):
     
     
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
-    train_history = model.fit(x=X_Train40_norm, y=y_TrainOneHot, epochs=epochs, batch_size=batch_size, verbose=1,
-    validation_split=0.2, shuffle=True)
+    train_history: History = model.fit(
+        x=X_Train40_norm, 
+        y=y_TrainOneHot, 
+        epochs=epochs, 
+        batch_size=batch_size, 
+        verbose=1,
+        validation_split=0.2, 
+        shuffle=True
+    )
     model.save('mango120_model.h5')
 
     # show_train_history(train_history, 'acc', 'val_acc')
     # show_train_history(train_history, 'loss', 'val_loss')    
 
-def show_train_history(train_history, train, validation):
+def show_train_history(train_history:History, train, validation):
     # plot train set accuarcy / loss function value ( determined by what parameter 'train' you pass )
     # The type of train_history.history is dictionary (a special data type in Python)
     
